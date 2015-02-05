@@ -1,0 +1,7 @@
+Podfile.lock
+Pods
+FSImageViewer.xcodeproj/xcuserdata
+*.xccheckout
+FSImageViewer.xcodeproj/project.xcworkspace/xcuserdata
+FSImageViewer.xcworkspace/xcuserdata
+documentation

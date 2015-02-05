@@ -16,6 +16,8 @@
 		<source-file src="src/android/helpers/ImageLoader.java" target-dir="src/com/speryans/PhotoViewer/helpers/ImageLoader" />
 		<source-file src="src/android/helpers/Utils.java" target-dir="src/com/speryans/PhotoViewer/helpers/Utils" />
 		
+		<source-file src="src/android/layout/activity_photo.xml" target-dir="res/layout/activity_photo" />
+		
 		<framework src="src/android/PhotoView" custom="true" />
 	</platform>
 	<platform name="ios">
@@ -26,12 +28,9 @@
 		</config-file>
 		<source-file src="src/ios/PhotoViewer.m" />
 		
-		<source-file src="src/ios/libPods.a" framework="true" />
-		<source-file src="src/ios/libPods-AFNetworking.a" framework="true" />
-		<source-file src="src/ios/libPods-EGOCache.a" framework="true" />
-		<source-file src="src/ios/libFSImageViewer.a" framework="true" />
+		<framework src="src/ios/FSImageViewer" custom="true" />
 		
-		<framework src="CFNwetwork.framework" />
+		<framework src="CFNetwork.framework" />
 		<framework src="Security.framework" />
 	</platform>
 </plugin>
