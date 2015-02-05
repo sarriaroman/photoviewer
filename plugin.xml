@@ -28,6 +28,6 @@
 		</config-file>
 		<source-file src="src/ios/PhotoViewer.m" />
 		
-		<source-file src="src/ios/Podfile" target-dir="src/Podfile" />
+		<source-file src="src/ios/Podfile" target-dir="../../" />
 	</platform>
 </plugin>

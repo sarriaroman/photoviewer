@@ -1,6 +1,9 @@
 /********* PhotoViewer.m Cordova Plugin Implementation *******/
 
 #import <Cordova/CDV.h>
+#import <FSBasicImage.h>
+#import <FSBasicImageSource.h>
+#import <FSImageViewerViewController.h>
 
 @interface PhotoViewer : CDVPlugin {
   // Member variables go here.
@@ -17,7 +20,7 @@
     NSString* url = [command.arguments objectAtIndex:0];
 
     if (url != nil && [url length] > 0) {
-        FSBasicImage *firstPhoto = [[FSBasicImage alloc] initWithImageURL:[NSURL URLWithString:url] name:url];
+        FSBasicImage *firstPhoto = [[FSBasicImage alloc] initWithImageURL:[NSURL URLWithString:url]];
         
         FSBasicImageSource *photoSource = [[FSBasicImageSource alloc] initWithImages:@[firstPhoto]];
 
