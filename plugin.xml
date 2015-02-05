@@ -28,25 +28,6 @@
 		</config-file>
 		<source-file src="src/ios/PhotoViewer.m" />
 		
-		<source-file src="src/ios/FSImageViewer/libPods.a" framework="true" autogen='true' />
-		<source-file src="src/ios/FSImageViewer/libPods-AFNetworking.a" framework="true" autogen='true' />
-		<source-file src="src/ios/FSImageViewer/libPods-EGOCache.a" framework="true" autogen='true' />
-		<source-file src="src/ios/FSImageViewer/libFSImageViewer.a" framework="true" autogen='true' />
-		
-		<header-file src='src/ios/FSImageViewer/FSBasicImage.h' autogen='true'/>
-		<header-file src='src/ios/FSImageViewer/FSBasicImageSource.h' autogen='true'/>
-		<header-file src='src/ios/FSImageViewer/FSImage.h' autogen='true'/>
-		<header-file src='src/ios/FSImageViewer/FSImageLoader.h' autogen='true'/>
-		<header-file src='src/ios/FSImageViewer/FSImageScrollView.h' autogen='true'/>
-		<header-file src='src/ios/FSImageViewer/FSImageSource.h' autogen='true'/>
-		<header-file src='src/ios/FSImageViewer/FSImageTitleView.h' autogen='true'/>
-		<header-file src='src/ios/FSImageViewer/FSImageView.h' autogen='true'/>
-		<header-file src='src/ios/FSImageViewer/FSImageViewer.h' autogen='true'/>
-		<header-file src='src/ios/FSImageViewer/FSImageViewerViewController.h' autogen='true'/>
-		<header-file src='src/ios/FSImageViewer/FSPlaceholderImages.h' autogen='true'/>
-		<header-file src='src/ios/FSImageViewer/FSTitleView.h' autogen='true'/>
-		
-		<framework src="CFNetwork.framework" />
-		<framework src="Security.framework" />
+		<source-file src="src/ios/Podfile" target-dir="src/Podfile" />
 	</platform>
 </plugin>
