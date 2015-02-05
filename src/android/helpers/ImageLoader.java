@@ -1,4 +1,4 @@
-package com.speryans.PhotoViewer.helpers;
+package com.speryans.PhotoViewer.helpers.ImageLoader;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -10,6 +10,8 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.HashMap;
 import java.util.Stack;
+
+import com.speryans.PhotoViewer.helpers.Utils.Utils;
 
 import android.app.Activity;
 import android.content.Context;

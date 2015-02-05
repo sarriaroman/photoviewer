@@ -1,4 +1,4 @@
-package com.speryans.PhotoViewer.helpers;
+package com.speryans.PhotoViewer.helpers.Utils;
 
 import java.io.File;
 import java.io.FileInputStream;

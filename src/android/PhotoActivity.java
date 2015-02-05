@@ -1,4 +1,4 @@
-package com.speryans.PhotoViewer;
+package com.speryans.PhotoViewer.PhotoActivity;
 
 import uk.co.senab.photoview.PhotoViewAttacher;
 import android.app.Activity;
@@ -7,8 +7,8 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
-import com.cronos.fullimage.helpers.ImageLoader;
-import com.cronos.fullimage.helpers.ImageLoader.ImageListener;
+import com.speryans.PhotoViewer.helpers.ImageLoader.ImageLoader;
+import com.speryans.PhotoViewer.helpers.ImageLoader.ImageLoader.ImageListener;
 import com.speryans.palmira.R;
 
 public class PhotoActivity extends Activity implements ImageListener {
