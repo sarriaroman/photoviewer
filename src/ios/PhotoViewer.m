@@ -17,7 +17,15 @@
     NSString* url = [command.arguments objectAtIndex:0];
 
     if (url != nil && [url length] > 0) {
-        pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsString:echo];
+        FSBasicImage *firstPhoto = [[FSBasicImage alloc] initWithImageURL:[NSURL URLWithString:url] name:url];
+        
+        FSBasicImageSource *photoSource = [[FSBasicImageSource alloc] initWithImages:@[firstPhoto]];
+
+        FSImageViewerViewController *imageViewController = [[FSImageViewerViewController alloc] initWithImageSource:photoSource];
+        UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:imageViewController];
+        [self.viewController presentViewController:navigationController animated:YES completion:nil];
+        
+        pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK];
     } else {
         pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR];
     }
