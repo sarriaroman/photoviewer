@@ -43,7 +43,7 @@
 		<header-file src='src/ios/FSImageViewer/FSImageView.h' autogen='true'/>
 		<header-file src='src/ios/FSImageViewer/FSImageViewer.h' autogen='true'/>
 		<header-file src='src/ios/FSImageViewer/FSImageViewerViewController.h' autogen='true'/>
-		<header-file src='src/ios/FSImageViewer/FSPlacheholderImages.h' autogen='true'/>
+		<header-file src='src/ios/FSImageViewer/FSPlaceholderImages.h' autogen='true'/>
 		<header-file src='src/ios/FSImageViewer/FSTitleView.h' autogen='true'/>
 		
 		<framework src="CFNetwork.framework" />
