@@ -1,6 +1,7 @@
 <?xml version='1.0' encoding='utf-8' ?>
-<plugin id="com.speryans.PhotoViewer" version="0.1" xmlns="http://apache.org/cordova/ns/plugins/1.0" xmlns:android="http://schemas.android.com/apk/res/android">
+<plugin id="com.speryans.PhotoViewer" version="1.0.0" xmlns="http://apache.org/cordova/ns/plugins/1.0" xmlns:android="http://schemas.android.com/apk/res/android">
 	<name>PhotoViewer</name>
+	<description>This plugin is intended to show a picture from an URL into a Photo Viewer with zoom features.</description>
 	<js-module name="PhotoViewer" src="www/PhotoViewer.js">
 		<clobbers target="cordova.plugins.PhotoViewer" />
 	</js-module>
