@@ -11,6 +11,11 @@
 			</feature>
 		</config-file>
 		<config-file parent="/*" target="AndroidManifest.xml" />
+		
+		<config-file target="AndroidManifest.xml" parent="/manifest/application">
+            <activity android:name="com.speryans.PhotoViewer.PhotoActivity.PhotoActivity.java" />
+        </config-file>
+		
 		<source-file src="src/android/PhotoViewer.java" target-dir="src/com/speryans/PhotoViewer" />
 		<source-file src="src/android/PhotoActivity.java" target-dir="src/com/speryans/PhotoViewer/PhotoActivity" />
 		<source-file src="src/android/helpers/ImageLoader.java" target-dir="src/com/speryans/PhotoViewer/helpers/ImageLoader" />
