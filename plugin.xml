@@ -13,7 +13,7 @@
 		<config-file parent="/*" target="AndroidManifest.xml" />
 		
 		<config-file target="AndroidManifest.xml" parent="/manifest/application">
-            <activity android:name="com.speryans.palmira/com.speryans.PhotoViewer.PhotoActivity.PhotoActivity" />
+            <activity android:name="com.speryans.PhotoViewer.PhotoActivity.PhotoActivity" />
         </config-file>
 		
 		<source-file src="src/android/PhotoViewer.java" target-dir="src/com/speryans/PhotoViewer" />
