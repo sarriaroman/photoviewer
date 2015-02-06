@@ -16,7 +16,7 @@
 		<source-file src="src/android/helpers/ImageLoader.java" target-dir="src/com/speryans/PhotoViewer/helpers/ImageLoader" />
 		<source-file src="src/android/helpers/Utils.java" target-dir="src/com/speryans/PhotoViewer/helpers/Utils" />
 		
-		<source-file src="src/android/layout/activity_photo.xml" target-dir="res/layout/activity_photo" />
+		<source-file src="src/android/layout/activity_photo.xml" target-dir="res/layout" />
 		
 		<framework src="src/android/PhotoView" custom="true" />
 	</platform>
