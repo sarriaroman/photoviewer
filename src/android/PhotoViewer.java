@@ -1,4 +1,4 @@
-package com.speryans.PhotoViewer.PhotoViewer;
+package com.speryans.PhotoViewer;
 
 import org.apache.cordova.CordovaPlugin;
 import org.apache.cordova.CallbackContext;
