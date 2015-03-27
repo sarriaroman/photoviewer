@@ -9,7 +9,6 @@ import android.widget.LinearLayout;
 
 import com.speryans.PhotoViewer.helpers.ImageLoader.ImageLoader;
 import com.speryans.PhotoViewer.helpers.ImageLoader.ImageLoader.ImageListener;
-import com.speryans.palmira.R;
 
 public class PhotoActivity extends Activity implements ImageListener {
 
@@ -20,12 +19,12 @@ public class PhotoActivity extends Activity implements ImageListener {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		
-		setContentView(R.layout.activity_photo);
+
+		setContentView( getApplication().getResources().getIdentifier("activity_photo", "layout", getApplication().getPackageName()) );
 		
 		String image = this.getIntent().getStringExtra("url");
 
-		photo = (ImageView) findViewById(R.id.photoView);
+		photo = (ImageView) findViewById( getApplication().getResources().getIdentifier("photoView", "id", getApplication().getPackageName()) );
 		
 		ImageLoader image_loader = new ImageLoader(this, android.R.color.transparent);
 		image_loader.displayImage(image, photo, 100, this);
@@ -33,7 +32,7 @@ public class PhotoActivity extends Activity implements ImageListener {
 		mAttacher = new PhotoViewAttacher(photo);
 		
 		// Just hide the screen controls
-		((LinearLayout) this.findViewById(R.id.fullscreen_content_controls)).setVisibility(View.GONE);
+		((LinearLayout) this.findViewById( getApplication().getResources().getIdentifier("fullscreen_content_controls", "id", getApplication().getPackageName()) )).setVisibility(View.GONE);
 	}
 
 	@Override
