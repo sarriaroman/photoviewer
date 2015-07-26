@@ -1,18 +1,45 @@
 /********* PhotoViewer.m Cordova Plugin Implementation *******/
 
 #import <Cordova/CDV.h>
-#import <FSBasicImage.h>
-#import <FSBasicImageSource.h>
-#import <FSImageViewerViewController.h>
+#import <Foundation/Foundation.h>
+#import <UIKit/UIKit.h>
+#import <MobileCoreServices/MobileCoreServices.h>
 
-@interface PhotoViewer : CDVPlugin {
+@interface PhotoViewer : CDVPlugin <UIDocumentInteractionControllerDelegate> {
   // Member variables go here.
 }
+
+@property (nonatomic, strong) UIDocumentInteractionController *docInteractionController;
+@property (nonatomic, strong) NSMutableArray *documentURLs;
 
 - (void)show:(CDVInvokedUrlCommand*)command;
 @end
 
 @implementation PhotoViewer
+
+- (void)setupDocumentControllerWithURL:(NSURL *)url
+{
+    if (self.docInteractionController == nil) {
+        self.docInteractionController = [UIDocumentInteractionController interactionControllerWithURL:url];
+        self.docInteractionController.name = @"";
+        self.docInteractionController.delegate = self;
+    } else {
+        self.docInteractionController.URL = url;
+    }
+}
+
+- (UIDocumentInteractionController *) setupControllerWithURL: (NSURL*) fileURL
+                                               usingDelegate: (id <UIDocumentInteractionControllerDelegate>) interactionDelegate {
+
+    UIDocumentInteractionController *interactionController = [UIDocumentInteractionController interactionControllerWithURL: fileURL];
+    interactionController.delegate = interactionDelegate;
+
+    return interactionController;
+}
+
+- (UIViewController *) documentInteractionControllerViewControllerForPreview:(UIDocumentInteractionController *) controller {
+    return self.viewController;
+}
 
 - (void)show:(CDVInvokedUrlCommand*)command
 {
@@ -20,20 +47,61 @@
     NSString* url = [command.arguments objectAtIndex:0];
 
     if (url != nil && [url length] > 0) {
-        FSBasicImage *firstPhoto = [[FSBasicImage alloc] initWithImageURL:[NSURL URLWithString:url]];
-        
-        FSBasicImageSource *photoSource = [[FSBasicImageSource alloc] initWithImages:@[firstPhoto]];
+        [self.commandDelegate runInBackground:^{
+            self.documentURLs = [NSMutableArray array];
 
-        FSImageViewerViewController *imageViewController = [[FSImageViewerViewController alloc] initWithImageSource:photoSource];
-        UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:imageViewController];
-        [self.viewController presentViewController:navigationController animated:YES completion:nil];
-        
+            NSURL *URL = [self localFileURLForImage:url];
+
+            if (URL) {
+                [self.documentURLs addObject:URL];
+                [self setupDocumentControllerWithURL:URL];
+                double delayInSeconds = 0.1;
+                dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, delayInSeconds * NSEC_PER_SEC);
+                dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
+                    [self.docInteractionController presentPreviewAnimated:YES];
+                });
+            }
+        }];
         pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK];
     } else {
         pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR];
     }
 
     [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
+}
+
+- (NSURL *)localFileURLForImage:(NSString *)image
+{
+    // save this image to a temp folder
+    NSURL *tmpDirURL = [NSURL fileURLWithPath:NSTemporaryDirectory() isDirectory:YES];
+    NSString *filename = [[NSUUID UUID] UUIDString];
+    NSURL *fileURL = [NSURL URLWithString:image];
+
+    NSData *data = [NSData dataWithContentsOfURL:fileURL];
+
+    fileURL = [[tmpDirURL URLByAppendingPathComponent:filename] URLByAppendingPathExtension:[self contentTypeForImageData:data]];
+
+    [[NSFileManager defaultManager] createFileAtPath:[fileURL path] contents:data attributes:nil];
+
+    return fileURL;
+}
+
+- (NSString *)contentTypeForImageData:(NSData *)data {
+    uint8_t c;
+    [data getBytes:&c length:1];
+
+    switch (c) {
+        case 0xFF:
+            return @"jpeg";
+        case 0x89:
+            return @"png";
+        case 0x47:
+            return @"gif";
+        case 0x49:
+        case 0x4D:
+            return @"tiff";
+    }
+    return nil;
 }
 
 @end

@@ -5,6 +5,7 @@
 > Out of the box
 
 ### iOS
-> On iOS is being used a CocoaPod Library so, install CocoaPod and after install the plugin run the pod install in the iOS folder  
-> pod install --no-integrate  
-> Remember to add $(inherited) into OTHER_LDFLAGS
+> Out of the box
+
+### Versions  
+(1.0.2) Removed Podfile and the dependency  
