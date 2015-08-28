@@ -3,7 +3,7 @@
 	<name>PhotoViewer</name>
 	<description>This plugin is intended to show a picture from an URL into a Photo Viewer with zoom features.</description>
 	<js-module name="PhotoViewer" src="www/PhotoViewer.js">
-		<clobbers target="cordova.plugins.PhotoViewer" />
+		<clobbers target="PhotoViewer" />
 	</js-module>
 	<platform name="android">
 		<config-file parent="/*" target="res/xml/config.xml">
@@ -38,7 +38,5 @@
 			</feature>
 		</config-file>
 		<source-file src="src/ios/PhotoViewer.m" />
-
-		<source-file src="src/ios/Podfile" target-dir="../../" />
 	</platform>
 </plugin>

@@ -7,5 +7,14 @@
 ### iOS
 > Out of the box
 
+
+### API
+
+#### Show an image
+
+```
+PhotoViewer.show('http://my_site.com/my_image.jpg');
+```
+
 ### Versions  
 (1.0.2) Removed Podfile and the dependency  
