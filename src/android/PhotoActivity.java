@@ -8,8 +8,10 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 
 import android.view.GestureDetector;
+import android.view.MotionEvent;
 
 import android.content.Intent;
+import android.net.Uri;
 
 import com.speryans.PhotoViewer.helpers.ImageLoader.ImageLoader;
 import com.speryans.PhotoViewer.helpers.ImageLoader.ImageLoader.ImageListener;
@@ -28,7 +30,7 @@ public class PhotoActivity extends Activity implements ImageListener {
 			sharingIntent.setType("image/*");
 			sharingIntent.putExtra(Intent.EXTRA_STREAM, Uri.parse(imageUrl));
 
-			startActivity(Intent.createChooser(shareIntent, "Share"));
+			startActivity(Intent.createChooser(sharingIntent, "Share"));
 	    }
 	});
 
@@ -38,7 +40,7 @@ public class PhotoActivity extends Activity implements ImageListener {
 		setContentView( getApplication().getResources().getIdentifier("activity_photo", "layout", getApplication().getPackageName()) );
 
 		// Change the Activity Title
-		actTitle = this.getIntent().getStringExtra("title");
+		String actTitle = this.getIntent().getStringExtra("title");
 		if( !actTitle.equals("") ) {
 			this.setTitle(actTitle);
 		}
