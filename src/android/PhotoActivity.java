@@ -7,6 +7,10 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
+import android.view.GestureDetector;
+
+import android.content.Intent;
+
 import com.speryans.PhotoViewer.helpers.ImageLoader.ImageLoader;
 import com.speryans.PhotoViewer.helpers.ImageLoader.ImageLoader.ImageListener;
 
@@ -58,6 +62,7 @@ public class PhotoActivity extends Activity implements ImageListener {
 		mAttacher.update();
 	}
 
+	@Override
 	public boolean onTouchEvent(MotionEvent event) {
     	return gestureDetector.onTouchEvent(event);
 	}
