@@ -17,11 +17,11 @@
 
 @implementation PhotoViewer
 
-- (void)setupDocumentControllerWithURL:(NSURL *)url
+- (void)setupDocumentControllerWithURL:(NSURL *)url andTitle:(NSString *)title
 {
     if (self.docInteractionController == nil) {
         self.docInteractionController = [UIDocumentInteractionController interactionControllerWithURL:url];
-        self.docInteractionController.name = @"";
+        self.docInteractionController.name = title;
         self.docInteractionController.delegate = self;
     } else {
         self.docInteractionController.URL = url;
@@ -45,6 +45,7 @@
 {
     CDVPluginResult* pluginResult = nil;
     NSString* url = [command.arguments objectAtIndex:0];
+    NSString* title = [command.arguments objectAtIndex:1];
 
     if (url != nil && [url length] > 0) {
         [self.commandDelegate runInBackground:^{
@@ -54,7 +55,7 @@
 
             if (URL) {
                 [self.documentURLs addObject:URL];
-                [self setupDocumentControllerWithURL:URL];
+                [self setupDocumentControllerWithURL:URL andTitle:title];
                 double delayInSeconds = 0.1;
                 dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, delayInSeconds * NSEC_PER_SEC);
                 dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
