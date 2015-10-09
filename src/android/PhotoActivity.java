@@ -49,10 +49,14 @@ public class PhotoActivity extends Activity implements ImageListener {
 
 		photo = (ImageView) findViewById( getApplication().getResources().getIdentifier("photoView", "id", getApplication().getPackageName()) );
 
-		ImageLoader image_loader = new ImageLoader(this, android.R.color.transparent);
-		image_loader.displayImage(imageUrl, photo, 100, this);
+		if( imageUrl.startsWith("http") ) {
+			ImageLoader image_loader = new ImageLoader(this, android.R.color.transparent);
+			image_loader.displayImage(imageUrl, photo, 100, this);
 
-		mAttacher = new PhotoViewAttacher(photo);
+			mAttacher = new PhotoViewAttacher(photo);
+		} else {
+			photo.setImageURI(Uri.parse(imageUrl));
+		}
 
 		// Just hide the screen controls
 		((LinearLayout) this.findViewById( getApplication().getResources().getIdentifier("fullscreen_content_controls", "id", getApplication().getPackageName()) )).setVisibility(View.GONE);
