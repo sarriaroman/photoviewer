@@ -19,8 +19,18 @@ cordova plugin add com-sarriaroman-photoviewer
 #### Show an image
 
 ```
-PhotoViewer.show('http://my_site.com/my_image.jpg');
+PhotoViewer.show('http://my_site.com/my_image.jpg', 'Optional Title');
 ```
 
 ### Versions  
 (1.0.2) Removed Podfile and the dependency  
+(1.1.0)
+- Removing project dependencies.  
+- Moving to Gradle  
+- Adding Square's Picasso as Image Loader  
+- New Optional Title
+- Share button and title bar
+- Automatic close on error.
+- Support for content:// Uris from Cordova
+- Replaced old namespace
+- Published to NPM

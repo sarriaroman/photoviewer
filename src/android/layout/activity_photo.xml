@@ -41,6 +41,25 @@
                 android:padding="8dp"
                 android:text="Close" />
 
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:text=""
+                android:id="@+id/titleTxt"
+                android:layout_weight="1"
+                android:textColor="@android:color/primary_text_dark"
+                android:gravity="center_vertical|center_horizontal" />
+
+            <ImageButton
+                android:id="@+id/shareBtn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@android:color/transparent"
+                android:src="@android:drawable/ic_menu_share"
+                android:padding="8dp"
+                android:text="Close" />
+
         </LinearLayout>
     </FrameLayout>
 

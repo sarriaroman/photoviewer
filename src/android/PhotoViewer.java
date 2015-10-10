@@ -1,4 +1,4 @@
-package com.speryans.PhotoViewer;
+package com.sarriaroman.PhotoViewer;
 
 import org.apache.cordova.CordovaPlugin;
 import org.apache.cordova.CallbackContext;
@@ -20,7 +20,7 @@ public class PhotoViewer extends CordovaPlugin {
 
 			i.putExtra("url", args.getString(0));
             i.putExtra("title", args.getString(1));
-            
+
 			this.cordova.getActivity().startActivity(i);
 
 			callbackContext.success("");

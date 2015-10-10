@@ -1,71 +1,130 @@
-package com.speryans.PhotoViewer.PhotoActivity;
+package com.sarriaroman.PhotoViewer.PhotoActivity;
 
 import uk.co.senab.photoview.PhotoViewAttacher;
 import android.app.Activity;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.ImageButton;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
-
-import android.view.GestureDetector;
-import android.view.MotionEvent;
 
 import android.content.Intent;
 import android.net.Uri;
+import android.widget.TextView;
+import android.widget.Toast;
 
-import com.speryans.PhotoViewer.helpers.ImageLoader.ImageLoader;
-import com.speryans.PhotoViewer.helpers.ImageLoader.ImageLoader.ImageListener;
+import com.squareup.picasso.Picasso;
 
-public class PhotoActivity extends Activity implements ImageListener {
-
+public class PhotoActivity extends Activity {
 	private PhotoViewAttacher mAttacher;
 
 	private ImageView photo;
 	private String imageUrl;
 
-	final GestureDetector gestureDetector = new GestureDetector(new GestureDetector.SimpleOnGestureListener() {
-	    public void onLongPress(MotionEvent e) {
-			Intent sharingIntent = new Intent(Intent.ACTION_SEND);
+	private ImageButton closeBtn;
+	private ImageButton shareBtn;
 
-			sharingIntent.setType("image/*");
-			sharingIntent.putExtra(Intent.EXTRA_STREAM, Uri.parse(imageUrl));
-
-			startActivity(Intent.createChooser(sharingIntent, "Share"));
-	    }
-	});
+	private TextView titleTxt;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView( getApplication().getResources().getIdentifier("activity_photo", "layout", getApplication().getPackageName()) );
+
+		setContentView(getApplication().getResources().getIdentifier("activity_photo", "layout", getApplication().getPackageName()));
+
+		// Load the Views
+		findViews();
 
 		// Change the Activity Title
 		String actTitle = this.getIntent().getStringExtra("title");
 		if( !actTitle.equals("") ) {
-			this.setTitle(actTitle);
+			titleTxt.setText(actTitle);
 		}
 
 		imageUrl = this.getIntent().getStringExtra("url");
 
-		photo = (ImageView) findViewById( getApplication().getResources().getIdentifier("photoView", "id", getApplication().getPackageName()) );
+		// Set Button Listeners
+		closeBtn.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				finish();
+			}
+		});
 
-		ImageLoader image_loader = new ImageLoader(this, android.R.color.transparent);
-		image_loader.displayImage(imageUrl, photo, 100, this);
+		shareBtn.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				Intent sharingIntent = new Intent(Intent.ACTION_SEND);
 
-		mAttacher = new PhotoViewAttacher(photo);
+				sharingIntent.setType("image/*");
+				sharingIntent.putExtra(Intent.EXTRA_STREAM, Uri.parse(imageUrl));
 
-		// Just hide the screen controls
-		((LinearLayout) this.findViewById( getApplication().getResources().getIdentifier("fullscreen_content_controls", "id", getApplication().getPackageName()) )).setVisibility(View.GONE);
+				startActivity(Intent.createChooser(sharingIntent, "Share"));
+			}
+		});
+
+		loadImage();
 	}
 
-	@Override
-	public void imageLoaded(String url) {
+	/**
+	 * Find and Connect Views
+	 *
+	 */
+	private void findViews() {
+		// Buttons first
+		closeBtn = (ImageButton) findViewById( getApplication().getResources().getIdentifier("closeBtn", "id", getApplication().getPackageName()) );
+		shareBtn = (ImageButton) findViewById( getApplication().getResources().getIdentifier("shareBtn", "id", getApplication().getPackageName()) );
+
+		// Photo Container
+		photo = (ImageView) findViewById( getApplication().getResources().getIdentifier("photoView", "id", getApplication().getPackageName()) );
+		mAttacher = new PhotoViewAttacher(photo);
+
+		// Title TextView
+		titleTxt = (TextView) findViewById( getApplication().getResources().getIdentifier("titleTxt", "id", getApplication().getPackageName()) );
+	}
+
+	/**
+	 * Get the current Activity
+	 *
+	 * @return
+	 */
+	private Activity getActivity() {
+		return this;
+	}
+
+	/**
+	 * Hide Loading when showing the photo. Update the PhotoView Attacher
+	 */
+	private void hideLoadingAndUpdate() {
 		photo.setVisibility(View.VISIBLE);
 		mAttacher.update();
 	}
 
-	@Override
-	public boolean onTouchEvent(MotionEvent event) {
-    	return gestureDetector.onTouchEvent(event);
+	/**
+	 * Load the image using Picasso
+	 *
+	 */
+	private void loadImage() {
+		if( imageUrl.startsWith("http") ) {
+		Picasso.with(this)
+				.load(imageUrl)
+				.into(photo, new com.squareup.picasso.Callback() {
+					@Override
+					public void onSuccess() {
+						hideLoadingAndUpdate();
+					}
+
+					@Override
+					public void onError() {
+						Toast.makeText(getActivity(), "Error loading image.", Toast.LENGTH_LONG).show();
+
+						finish();
+					}
+				});
+		} else {
+			photo.setImageURI(Uri.parse(imageUrl));
+
+			hideLoadingAndUpdate();
+		}
 	}
+
 }
