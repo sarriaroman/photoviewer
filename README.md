@@ -33,4 +33,6 @@ PhotoViewer.show('http://my_site.com/my_image.jpg', 'Optional Title');
 - Automatic close on error.
 - Support for content:// Uris from Cordova
 - Replaced old namespace
-- Published to NPM
+- Published to NPM  
+(1.1.1)
+- Fix for sharing due to online restriction

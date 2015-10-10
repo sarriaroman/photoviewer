@@ -2,7 +2,11 @@ package com.sarriaroman.PhotoViewer;
 
 import uk.co.senab.photoview.PhotoViewAttacher;
 import android.app.Activity;
+import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.os.Environment;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -13,6 +17,10 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.squareup.picasso.Picasso;
+
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
 
 public class PhotoActivity extends Activity {
 	private PhotoViewAttacher mAttacher;
@@ -34,6 +42,9 @@ public class PhotoActivity extends Activity {
 		// Load the Views
 		findViews();
 
+        // Hide the Share Button
+        shareBtn.setVisibility(View.INVISIBLE);
+
 		// Change the Activity Title
 		String actTitle = this.getIntent().getStringExtra("title");
 		if( !actTitle.equals("") ) {
@@ -53,12 +64,16 @@ public class PhotoActivity extends Activity {
 		shareBtn.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				Intent sharingIntent = new Intent(Intent.ACTION_SEND);
+				Uri bmpUri = getLocalBitmapUri(photo);
 
-				sharingIntent.setType("image/*");
-				sharingIntent.putExtra(Intent.EXTRA_STREAM, Uri.parse(imageUrl));
+				if (bmpUri != null) {
+				    Intent sharingIntent = new Intent(Intent.ACTION_SEND);
 
-				startActivity(Intent.createChooser(sharingIntent, "Share"));
+				    sharingIntent.setType("image/*");
+				    sharingIntent.putExtra(Intent.EXTRA_STREAM, bmpUri);
+
+				    startActivity(Intent.createChooser(sharingIntent, "Share"));
+				}
 			}
 		});
 
@@ -96,6 +111,8 @@ public class PhotoActivity extends Activity {
 	 */
 	private void hideLoadingAndUpdate() {
 		photo.setVisibility(View.VISIBLE);
+        shareBtn.setVisibility(View.VISIBLE);
+
 		mAttacher.update();
 	}
 
@@ -125,6 +142,44 @@ public class PhotoActivity extends Activity {
 
 			hideLoadingAndUpdate();
 		}
+	}
+
+	/**
+	 * Create Local Image due to Restrictions
+	 *
+	 * @param imageView
+	 *
+	 * @return
+	 */
+	public Uri getLocalBitmapUri(ImageView imageView) {
+		Drawable drawable = imageView.getDrawable();
+		Bitmap bmp = null;
+
+		if (drawable instanceof BitmapDrawable){
+			bmp = ((BitmapDrawable) imageView.getDrawable()).getBitmap();
+		} else {
+			return null;
+		}
+
+		// Store image to default external storage directory
+		Uri bmpUri = null;
+		try {
+			File file =  new File(
+					Environment.getExternalStoragePublicDirectory(
+						Environment.DIRECTORY_DOWNLOADS
+					), "share_image_" + System.currentTimeMillis() + ".png");
+
+			file.getParentFile().mkdirs();
+
+			FileOutputStream out = new FileOutputStream(file);
+			bmp.compress(Bitmap.CompressFormat.PNG, 90, out);
+			out.close();
+
+			bmpUri = Uri.fromFile(file);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return bmpUri;
 	}
 
 }
