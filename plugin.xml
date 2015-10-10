@@ -14,7 +14,7 @@
 		<config-file parent="/*" target="AndroidManifest.xml" />
 
 		<config-file target="AndroidManifest.xml" parent="/manifest/application">
-            <activity android:name="com.sarriaroman.PhotoViewer.PhotoActivity.PhotoActivity" android:theme="@android:style/Theme.Holo.NoActionBar.Fullscreen" />
+            <activity android:name="com.sarriaroman.PhotoViewer.PhotoActivity" android:theme="@android:style/Theme.Holo.NoActionBar.Fullscreen" />
         </config-file>
 
 		<config-file parent="/manifest" target="AndroidManifest.xml">
@@ -23,7 +23,7 @@
 		</config-file>
 
 		<source-file src="src/android/PhotoViewer.java" target-dir="src/com/sarriaroman/PhotoViewer" />
-		<source-file src="src/android/PhotoActivity.java" target-dir="src/com/sarriaroman/PhotoViewer/PhotoActivity" />
+		<source-file src="src/android/PhotoActivity.java" target-dir="src/com/sarriaroman/PhotoViewer" />
 
 		<source-file src="src/android/layout/activity_photo.xml" target-dir="res/layout" />
 

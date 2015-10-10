@@ -8,7 +8,10 @@ import org.json.JSONException;
 import android.content.Intent;
 
 /**
- * This class echoes a string called from JavaScript.
+ * Class to Open PhotoViewer with the Required Parameters from Cordova
+ *
+ * - URL
+ * - Title
  */
 public class PhotoViewer extends CordovaPlugin {
 
@@ -16,7 +19,7 @@ public class PhotoViewer extends CordovaPlugin {
     public boolean execute(String action, JSONArray args, CallbackContext callbackContext) throws JSONException {
         if (action.equals("show")) {
 
-			Intent i = new Intent(this.cordova.getActivity(), com.sarriaroman.PhotoViewer.PhotoActivity.PhotoActivity.class);
+			Intent i = new Intent(this.cordova.getActivity(), com.sarriaroman.PhotoViewer.PhotoActivity.class);
 
 			i.putExtra("url", args.getString(0));
             i.putExtra("title", args.getString(1));

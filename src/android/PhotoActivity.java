@@ -1,4 +1,4 @@
-package com.sarriaroman.PhotoViewer.PhotoActivity;
+package com.sarriaroman.PhotoViewer;
 
 import uk.co.senab.photoview.PhotoViewAttacher;
 import android.app.Activity;
