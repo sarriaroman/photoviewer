@@ -16,7 +16,7 @@ public class PhotoViewer extends CordovaPlugin {
     public boolean execute(String action, JSONArray args, CallbackContext callbackContext) throws JSONException {
         if (action.equals("show")) {
 
-			Intent i = new Intent(this.cordova.getActivity(), com.speryans.PhotoViewer.PhotoActivity.PhotoActivity.class);
+			Intent i = new Intent(this.cordova.getActivity(), com.sarriaroman.PhotoViewer.PhotoActivity.PhotoActivity.class);
 
 			i.putExtra("url", args.getString(0));
             i.putExtra("title", args.getString(1));
