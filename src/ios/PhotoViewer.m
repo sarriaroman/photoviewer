@@ -24,6 +24,7 @@
         self.docInteractionController.name = title;
         self.docInteractionController.delegate = self;
     } else {
+        self.docInteractionController.name = title;
         self.docInteractionController.URL = url;
     }
 }
@@ -80,11 +81,15 @@
 
     NSData *data = [NSData dataWithContentsOfURL:fileURL];
 
-    fileURL = [[tmpDirURL URLByAppendingPathComponent:filename] URLByAppendingPathExtension:[self contentTypeForImageData:data]];
+    if( data ) {
+        fileURL = [[tmpDirURL URLByAppendingPathComponent:filename] URLByAppendingPathExtension:[self contentTypeForImageData:data]];
 
-    [[NSFileManager defaultManager] createFileAtPath:[fileURL path] contents:data attributes:nil];
+        [[NSFileManager defaultManager] createFileAtPath:[fileURL path] contents:data attributes:nil];
 
-    return fileURL;
+        return fileURL;
+    } else {
+        return nil;
+    }
 }
 
 - (NSString *)contentTypeForImageData:(NSData *)data {
