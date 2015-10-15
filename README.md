@@ -34,5 +34,10 @@ PhotoViewer.show('http://my_site.com/my_image.jpg', 'Optional Title');
 - Support for content:// Uris from Cordova
 - Replaced old namespace
 - Published to NPM  
+
 (1.1.1)
 - Fix for sharing due to online restriction
+
+(1.1.2)
+- Fix issues on iOS
+- iOS title not updating
