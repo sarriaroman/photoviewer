@@ -44,6 +44,16 @@
 
 - (void)show:(CDVInvokedUrlCommand*)command
 {
+    UIActivityIndicatorView *activityIndicator = [[UIActivityIndicatorView alloc] initWithFrame:self.viewController.view.frame];
+    [activityIndicator setActivityIndicatorViewStyle:UIActivityIndicatorViewStyleWhiteLarge];
+    [activityIndicator.layer setBackgroundColor:[[UIColor colorWithWhite:0.0 alpha:0.30] CGColor]];
+    CGPoint center = self.viewController.view.center;
+    activityIndicator.center = center;
+    [self.viewController.view addSubview:activityIndicator];
+    
+    [activityIndicator startAnimating];
+    
+    
     CDVPluginResult* pluginResult = nil;
     NSString* url = [command.arguments objectAtIndex:0];
     NSString* title = [command.arguments objectAtIndex:1];
@@ -60,6 +70,7 @@
                 double delayInSeconds = 0.1;
                 dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, delayInSeconds * NSEC_PER_SEC);
                 dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
+                    [activityIndicator stopAnimating];
                     [self.docInteractionController presentPreviewAnimated:YES];
                 });
             }
