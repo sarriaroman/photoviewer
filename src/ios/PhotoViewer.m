@@ -89,6 +89,9 @@
     NSURL *tmpDirURL = [NSURL fileURLWithPath:NSTemporaryDirectory() isDirectory:YES];
     NSString *filename = [[NSUUID UUID] UUIDString];
     NSURL *fileURL = [NSURL URLWithString:image];
+    if ([fileURL isFileReferenceURL]) {
+        return fileURL;
+    }
 
     NSData *data = [NSData dataWithContentsOfURL:fileURL];
 
