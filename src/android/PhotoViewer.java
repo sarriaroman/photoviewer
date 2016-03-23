@@ -23,6 +23,7 @@ public class PhotoViewer extends CordovaPlugin {
 
 			i.putExtra("url", args.getString(0));
             i.putExtra("title", args.getString(1));
+            i.putExtra("options", args.optJSONObject(2).toString());
 
 			this.cordova.getActivity().startActivity(i);
 
