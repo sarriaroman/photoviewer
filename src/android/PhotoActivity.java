@@ -20,6 +20,9 @@ import android.widget.Toast;
 
 import com.squareup.picasso.Picasso;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -35,6 +38,9 @@ public class PhotoActivity extends Activity {
 
 	private TextView titleTxt;
 
+	private JSONObject options;
+	private int shareBtnVisibility;
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -44,8 +50,13 @@ public class PhotoActivity extends Activity {
 		// Load the Views
 		findViews();
 
-        // Hide the Share Button
-        shareBtn.setVisibility(View.INVISIBLE);
+		try {
+			options = new JSONObject(this.getIntent().getStringExtra("options"));
+			shareBtnVisibility = options.getBoolean("share") ? View.VISIBLE : View.INVISIBLE;
+		} catch(JSONException exception) {
+			shareBtnVisibility = View.VISIBLE;
+		}
+		shareBtn.setVisibility(shareBtnVisibility);
 
 		// Change the Activity Title
 		String actTitle = this.getIntent().getStringExtra("title");
@@ -113,7 +124,8 @@ public class PhotoActivity extends Activity {
 	 */
 	private void hideLoadingAndUpdate() {
 		photo.setVisibility(View.VISIBLE);
-        shareBtn.setVisibility(View.VISIBLE);
+
+        shareBtn.setVisibility(shareBtnVisibility);
 
 		mAttacher.update();
 	}
