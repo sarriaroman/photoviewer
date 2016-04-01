@@ -22,6 +22,14 @@ cordova plugin add com-sarriaroman-photoviewer
 PhotoViewer.show('http://my_site.com/my_image.jpg', 'Optional Title');
 ```
 
+Optionally you can pass third parameter which can be used to hide the share button [ONLY FOR ANDROID]
+
+##### Usage
+
+```
+PhotoViewer.show('http://my_site.com/my_image.jpg', 'Optional Title', {share:false});
+```
+
 ### Versions  
 (1.0.2) Removed Podfile and the dependency  
 (1.1.0)
@@ -41,3 +49,12 @@ PhotoViewer.show('http://my_site.com/my_image.jpg', 'Optional Title');
 (1.1.2)
 - Fix issues on iOS
 - iOS title not updating
+
+(1.1.3)
+- Issue fixes
+
+(1.1.4)
+- Base64 Support on Android
+
+(1.1.5)
+- Option to hide and show share button on Android
