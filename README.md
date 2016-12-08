@@ -61,3 +61,6 @@ PhotoViewer.show('http://my_site.com/my_image.jpg', 'Optional Title', {share:fal
 
 (1.1.7)  
 - Fix OOM issues on Android
+
+(1.1.9)  
+- Fix how image is shown on Android
