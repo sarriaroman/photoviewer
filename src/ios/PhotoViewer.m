@@ -98,7 +98,7 @@
 
     if( data ) {
         NSString *contentType = [self contentTypeForImageData:data];
-        fileURL = [[tmpDirURL URLByAppendingPathComponent:filename] URLByAppendingPathExtension:[scontentType];
+        fileURL = [[tmpDirURL URLByAppendingPathComponent:filename] URLByAppendingPathExtension:[contentType];
 
         [[NSFileManager defaultManager] createFileAtPath:[fileURL path] contents:data attributes:nil];
 
