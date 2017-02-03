@@ -135,7 +135,7 @@ public class PhotoActivity extends Activity {
 	 *
 	 */
 	private void loadImage() {
-		if( imageUrl.startsWith("http") ) {
+		if( imageUrl.startsWith("http") || imageUrl.startsWith("file") ) {
 		Picasso.with(this)
 				.load(imageUrl)
 				.fit()
