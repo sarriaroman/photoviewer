@@ -3,8 +3,15 @@
 
 ## How to Install
 
+Cordova:
 ```bash
 cordova plugin add com-sarriaroman-photoviewer
+```
+
+Ionic 2:
+```bash
+ionic plugin add --save com-sarriaroman-photoviewer
+npm install --save @ionic-native/photo-viewer
 ```
 
 ### Android
