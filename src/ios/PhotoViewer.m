@@ -11,6 +11,7 @@
 
 @property (nonatomic, strong) UIDocumentInteractionController *docInteractionController;
 @property (nonatomic, strong) NSMutableArray *documentURLs;
+@property (nonatomic, copy) NSString *callbackId;
 
 - (void)show:(CDVInvokedUrlCommand*)command;
 @end
@@ -50,13 +51,15 @@
     CGPoint center = self.viewController.view.center;
     activityIndicator.center = center;
     [self.viewController.view addSubview:activityIndicator];
-    
+
     [activityIndicator startAnimating];
-    
-    
+
+
     CDVPluginResult* pluginResult = nil;
     NSString* url = [command.arguments objectAtIndex:0];
     NSString* title = [command.arguments objectAtIndex:1];
+
+    self.callbackId = command.callbackId;
 
     if (url != nil && [url length] > 0) {
         [self.commandDelegate runInBackground:^{
@@ -76,6 +79,7 @@
             }
         }];
         pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK];
+        [pluginResult setKeepCallback:[NSNumber numberWithBool:YES]];
     } else {
         pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR];
     }
@@ -122,6 +126,12 @@
             return @"tiff";
     }
     return nil;
+}
+
+- (void)documentInteractionControllerDidEndPreview:(UIDocumentInteractionController *)controller{
+    CDVPluginResult* pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK
+                                                  messageAsDictionary:@{@"closed": @YES}];
+    [self.commandDelegate sendPluginResult:pluginResult callbackId:self.callbackId];
 }
 
 @end
