@@ -7,6 +7,7 @@
 
 @interface PhotoViewer : CDVPlugin <UIDocumentInteractionControllerDelegate> {
   // Member variables go here.
+    Boolean run;
 }
 
 @property (nonatomic, strong) UIDocumentInteractionController *docInteractionController;
@@ -39,48 +40,54 @@
 }
 
 - (UIViewController *) documentInteractionControllerViewControllerForPreview:(UIDocumentInteractionController *) controller {
+    run = false;
     return self.viewController;
 }
 
 - (void)show:(CDVInvokedUrlCommand*)command
 {
-    UIActivityIndicatorView *activityIndicator = [[UIActivityIndicatorView alloc] initWithFrame:self.viewController.view.frame];
-    [activityIndicator setActivityIndicatorViewStyle:UIActivityIndicatorViewStyleWhiteLarge];
-    [activityIndicator.layer setBackgroundColor:[[UIColor colorWithWhite:0.0 alpha:0.30] CGColor]];
-    CGPoint center = self.viewController.view.center;
-    activityIndicator.center = center;
-    [self.viewController.view addSubview:activityIndicator];
-    
-    [activityIndicator startAnimating];
-    
-    
-    CDVPluginResult* pluginResult = nil;
-    NSString* url = [command.arguments objectAtIndex:0];
-    NSString* title = [command.arguments objectAtIndex:1];
+    if (run == false) {
+        run = true;
+        UIActivityIndicatorView *activityIndicator = [[UIActivityIndicatorView alloc] initWithFrame:self.viewController.view.frame];
+        [activityIndicator setActivityIndicatorViewStyle:UIActivityIndicatorViewStyleWhiteLarge];
+        [activityIndicator.layer setBackgroundColor:[[UIColor colorWithWhite:0.0 alpha:0.30] CGColor]];
+        CGPoint center = self.viewController.view.center;
+        activityIndicator.center = center;
+        [self.viewController.view addSubview:activityIndicator];
+        
+        [activityIndicator startAnimating];
+        
+        
+        CDVPluginResult* pluginResult = nil;
+        NSString* url = [command.arguments objectAtIndex:0];
+        NSString* title = [command.arguments objectAtIndex:1];
 
-    if (url != nil && [url length] > 0) {
-        [self.commandDelegate runInBackground:^{
-            self.documentURLs = [NSMutableArray array];
+        if (url != nil && [url length] > 0) {
+            [self.commandDelegate runInBackground:^{
+                self.documentURLs = [NSMutableArray array];
 
-            NSURL *URL = [self localFileURLForImage:url];
+                NSURL *URL = [self localFileURLForImage:url];
 
-            if (URL) {
-                [self.documentURLs addObject:URL];
-                [self setupDocumentControllerWithURL:URL andTitle:title];
-                double delayInSeconds = 0.1;
-                dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, delayInSeconds * NSEC_PER_SEC);
-                dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
-                    [activityIndicator stopAnimating];
-                    [self.docInteractionController presentPreviewAnimated:YES];
-                });
-            }
-        }];
-        pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK];
-    } else {
-        pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR];
+                if (URL) {
+                    [self.documentURLs addObject:URL];
+                    [self setupDocumentControllerWithURL:URL andTitle:title];
+                    double delayInSeconds = 0.1;
+                    dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, delayInSeconds * NSEC_PER_SEC);
+                    dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
+                        [activityIndicator stopAnimating];
+                        [self.docInteractionController presentPreviewAnimated:YES];
+                        //[self.docInteractionController presentPreviewAnimated:NO];
+                        
+                    });
+                }
+            }];
+            pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK];
+        } else {
+            pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR];
+        }
+
+        [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
     }
-
-    [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
 }
 
 - (NSURL *)localFileURLForImage:(NSString *)image
@@ -88,11 +95,20 @@
     // save this image to a temp folder
     NSURL *tmpDirURL = [NSURL fileURLWithPath:NSTemporaryDirectory() isDirectory:YES];
     NSString *filename = [[NSUUID UUID] UUIDString];
-    NSURL *fileURL = [NSURL URLWithString:image];
+    
+    
+    
+    NSString* webStringURL = [image stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+    NSURL* fileURL = [NSURL URLWithString:webStringURL];
+    
+    
+    //NSURL *fileURL = [NSURL URLWithString:webStringURL];
+    
+    
     if ([fileURL isFileReferenceURL]) {
         return fileURL;
     }
-
+    
     NSData *data = [NSData dataWithContentsOfURL:fileURL];
 
     if( data ) {
