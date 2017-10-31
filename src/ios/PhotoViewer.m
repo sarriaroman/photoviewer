@@ -53,8 +53,7 @@
     
     [activityIndicator startAnimating];
     
-    
-    CDVPluginResult* pluginResult = nil;
+
     NSString* url = [command.arguments objectAtIndex:0];
     NSString* title = [command.arguments objectAtIndex:1];
 
@@ -73,14 +72,16 @@
                     [activityIndicator stopAnimating];
                     [self.docInteractionController presentPreviewAnimated:YES];
                 });
+                [self.commandDelegate sendPluginResult:[CDVPluginResult resultWithStatus:CDVCommandStatus_OK] callbackId:command.callbackId];
+            }
+            else {
+                [activityIndicator stopAnimating];
+                [self.commandDelegate sendPluginResult:[CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR messageAsString:@"Not an image"] callbackId:command.callbackId];
             }
         }];
-        pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK];
     } else {
-        pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR];
+        [self.commandDelegate sendPluginResult:[CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR] callbackId:command.callbackId];
     }
-
-    [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
 }
 
 - (NSURL *)localFileURLForImage:(NSString *)image
@@ -96,11 +97,16 @@
     NSData *data = [NSData dataWithContentsOfURL:fileURL];
 
     if( data ) {
-        fileURL = [[tmpDirURL URLByAppendingPathComponent:filename] URLByAppendingPathExtension:[self contentTypeForImageData:data]];
+        NSString *contentType = [self contentTypeForImageData:data];
+        if(contentType) {
+            fileURL = [[tmpDirURL URLByAppendingPathComponent:filename] URLByAppendingPathExtension:contentType];
 
-        [[NSFileManager defaultManager] createFileAtPath:[fileURL path] contents:data attributes:nil];
+            [[NSFileManager defaultManager] createFileAtPath:[fileURL path] contents:data attributes:nil];
 
-        return fileURL;
+            return fileURL;
+        } else {
+            return nil;
+        }
     } else {
         return nil;
     }
