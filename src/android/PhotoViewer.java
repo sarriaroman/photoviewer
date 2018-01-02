@@ -13,7 +13,7 @@ import android.content.pm.PackageManager;
 
 /**
  * Class to Open PhotoViewer with the Required Parameters from Cordova
- *
+ * <p>
  * - URL
  * - Title
  */
@@ -39,7 +39,8 @@ public class PhotoViewer extends CordovaPlugin {
             try {
                 JSONObject options = this.args.optJSONObject(2);
                 requiresExternalPermission = options.getBoolean("share");
-            } catch(JSONException exception) { }
+            } catch (JSONException exception) {
+            }
 
             if (!requiresExternalPermission || (cordova.hasPermission(READ) && cordova.hasPermission(WRITE))) {
                 this.launchActivity();
@@ -54,7 +55,8 @@ public class PhotoViewer extends CordovaPlugin {
     protected void getPermission() {
         cordova.requestPermissions(this, REQ_CODE, new String[]{WRITE, READ});
     }
-//
+
+    //
     protected void launchActivity() throws JSONException {
         Intent i = new Intent(this.cordova.getActivity(), com.sarriaroman.PhotoViewer.PhotoActivity.class);
         PhotoActivity.mArgs = this.args;
@@ -66,14 +68,14 @@ public class PhotoViewer extends CordovaPlugin {
     @Override
     public void onRequestPermissionResult(int requestCode, String[] permissions,
                                           int[] grantResults) throws JSONException {
-        for(int r:grantResults) {
-            if(r == PackageManager.PERMISSION_DENIED) {
+        for (int r : grantResults) {
+            if (r == PackageManager.PERMISSION_DENIED) {
                 this.callbackContext.sendPluginResult(new PluginResult(PluginResult.Status.ERROR, PERMISSION_DENIED_ERROR));
                 return;
             }
         }
 
-        switch(requestCode) {
+        switch (requestCode) {
             case REQ_CODE:
                 launchActivity();
                 break;
