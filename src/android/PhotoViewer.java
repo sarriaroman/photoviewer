@@ -54,13 +54,10 @@ public class PhotoViewer extends CordovaPlugin {
     protected void getPermission() {
         cordova.requestPermissions(this, REQ_CODE, new String[]{WRITE, READ});
     }
-
+//
     protected void launchActivity() throws JSONException {
         Intent i = new Intent(this.cordova.getActivity(), com.sarriaroman.PhotoViewer.PhotoActivity.class);
-
-        i.putExtra("url", this.args.getString(0));
-        i.putExtra("title", this.args.getString(1));
-        i.putExtra("options", this.args.optJSONObject(2).toString());
+        PhotoActivity.mArgs = this.args;
 
         this.cordova.getActivity().startActivity(i);
         this.callbackContext.success("");
@@ -83,4 +80,6 @@ public class PhotoViewer extends CordovaPlugin {
         }
 
     }
+
+
 }
