@@ -16,6 +16,7 @@ import android.widget.ImageView;
 import android.content.Intent;
 import android.net.Uri;
 import android.widget.TextView;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.squareup.picasso.Picasso;
@@ -32,6 +33,7 @@ public class PhotoActivity extends Activity {
 
 	private ImageView photo;
 	private String imageUrl;
+	private ProgressBar progressBar;
 
 	private ImageButton closeBtn;
 	private ImageButton shareBtn;
@@ -106,6 +108,9 @@ public class PhotoActivity extends Activity {
 		photo = (ImageView) findViewById( getApplication().getResources().getIdentifier("photoView", "id", getApplication().getPackageName()) );
 		mAttacher = new PhotoViewAttacher(photo);
 
+		//progress bar
+		progressBar = (ProgressBar) findViewById(getActivity().getResources().getIdentifier( "progressBar1", "id", getApplication().getPackageName()));
+
 		// Title TextView
 		titleTxt = (TextView) findViewById( getApplication().getResources().getIdentifier("titleTxt", "id", getApplication().getPackageName()) );
 	}
@@ -126,6 +131,8 @@ public class PhotoActivity extends Activity {
 		photo.setVisibility(View.VISIBLE);
 
         shareBtn.setVisibility(shareBtnVisibility);
+
+		progressBar.setVisibility(View.GONE);
 
 		mAttacher.update();
 	}
