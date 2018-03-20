@@ -22,7 +22,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.squareup.picasso.Picasso;
-import com.wedigtech.ananta.R;
 
 import org.json.JSONArray;
 import org.json.JSONException;
