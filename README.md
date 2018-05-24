@@ -29,12 +29,23 @@ $ npm install --save @ionic-native/photo-viewer
 PhotoViewer.show('http://my_site.com/my_image.jpg', 'Optional Title');
 ```
 
-Optionally you can pass third parameter which can be used to hide the share button [ONLY FOR ANDROID]
+Optionally you can pass third parameter option as object.
+
+Options:
+* share: Option is used to hide and show the share option.
+* closeBtn: Option for close button visibility when share false [ONLY FOR iOS]
+* copyToReference: If you need to copy image to reference before show then set it true [ONLY FOR iOS]
 
 ##### Usage
 
 ```
-PhotoViewer.show('http://my_site.com/my_image.jpg', 'Optional Title', {share:false});
+var options = {
+    share: true, // default is false
+    closeButton: false, // default is true
+    copyToReference: true // default is false
+};
+
+PhotoViewer.show('http://my_site.com/my_image.jpg', 'Optional Title', options);
 ```
 
 ### Versions  
@@ -71,3 +82,7 @@ PhotoViewer.show('http://my_site.com/my_image.jpg', 'Optional Title', {share:fal
 
 (1.1.9/10)  
 - Fix how image is shown on Android
+
+(1.1.17)  
+- Additional options added for iOS
+- Fix share issue with SDK version 24 or above on Android

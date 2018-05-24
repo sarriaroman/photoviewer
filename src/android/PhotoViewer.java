@@ -1,15 +1,14 @@
 package com.sarriaroman.PhotoViewer;
 
-import org.apache.cordova.CordovaPlugin;
-import org.apache.cordova.CallbackContext;
-import org.apache.cordova.PluginResult;
-import org.json.JSONArray;
-import org.json.JSONObject;
-import org.json.JSONException;
-
 import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+
+import org.apache.cordova.CallbackContext;
+import org.apache.cordova.CordovaPlugin;
+import org.apache.cordova.PluginResult;
+import org.json.JSONArray;
+import org.json.JSONException;
 
 /**
  * Class to Open PhotoViewer with the Required Parameters from Cordova
@@ -37,8 +36,7 @@ public class PhotoViewer extends CordovaPlugin {
 
             boolean requiresExternalPermission = true;
             try {
-                JSONObject options = this.args.optJSONObject(2);
-                requiresExternalPermission = options.getBoolean("share");
+                requiresExternalPermission = this.args.getBoolean(2);
             } catch (JSONException exception) {
             }
 
