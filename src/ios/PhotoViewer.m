@@ -188,10 +188,9 @@
     if(showCloseBtn) {
         closeBtn = [UIButton buttonWithType:UIButtonTypeSystem];
         [closeBtn setTitle:@"✕" forState:UIControlStateNormal];
-        closeBtn.titleLabel.font = [UIFont systemFontOfSize: 20];
+        closeBtn.titleLabel.font = [UIFont systemFontOfSize: 32];
         [closeBtn setTitleColor:[UIColor colorWithRed:255/255.0 green:255/255.0 blue:255/255.0 alpha:0.6] forState:UIControlStateNormal];
-        closeBtn.contentHorizontalAlignment = UIControlContentHorizontalAlignmentRight;
-        [closeBtn setFrame:CGRectMake(viewWidth - 45, 20, 40, 40)];
+        [closeBtn setFrame:CGRectMake(0, viewHeight - 50, 50, 50)];
         [closeBtn setBackgroundColor:[UIColor colorWithRed:0.0 green:0.0 blue:0.0 alpha:0.0]];
         [closeBtn addTarget:self action:@selector(closeButtonPressed:) forControlEvents:UIControlEventTouchUpInside];
         [self.viewController.view addSubview:closeBtn];
