@@ -1,21 +1,20 @@
 package com.sarriaroman.PhotoViewer;
 
-import uk.co.senab.photoview.PhotoViewAttacher;
-
 import android.app.Activity;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
+import android.net.Uri;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
+import android.os.StrictMode;
 import android.util.Base64;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ImageView;
-
-import android.content.Intent;
-import android.net.Uri;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -24,11 +23,13 @@ import com.squareup.picasso.Picasso;
 
 import org.json.JSONArray;
 import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.lang.reflect.Method;
+
+import uk.co.senab.photoview.PhotoViewAttacher;
 
 public class PhotoActivity extends Activity {
     private PhotoViewAttacher mAttacher;
@@ -43,7 +44,7 @@ public class PhotoActivity extends Activity {
 
     private String mImage;
     private String mTitle;
-    private JSONObject mOptions;
+    private boolean mShare;
     private File mTempImage;
     private int shareBtnVisibility;
 
@@ -61,13 +62,13 @@ public class PhotoActivity extends Activity {
         try {
             this.mImage = mArgs.getString(0);
             this.mTitle = mArgs.getString(1);
-            this.mOptions = mArgs.getJSONObject(2);
+            this.mShare = mArgs.getBoolean(2);
             //Set the share button visibility
-            shareBtnVisibility = mOptions.getBoolean("share") ? View.VISIBLE : View.INVISIBLE;
+            shareBtnVisibility = this.mShare ? View.VISIBLE : View.INVISIBLE;
 
 
         } catch (JSONException exception) {
-            shareBtnVisibility = View.VISIBLE;
+            shareBtnVisibility = View.INVISIBLE;
         }
         shareBtn.setVisibility(shareBtnVisibility);
         //Change the activity title
@@ -88,8 +89,17 @@ public class PhotoActivity extends Activity {
         shareBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if (Build.VERSION.SDK_INT >= 24) {
+                    try {
+                        Method m = StrictMode.class.getMethod("disableDeathOnFileUriExposure");
+                        m.invoke(null);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+
                 Uri imageUri;
-                if (mTempImage == null){
+                if (mTempImage == null) {
                     mTempImage = getLocalBitmapFileFromView(photo);
                 }
 
