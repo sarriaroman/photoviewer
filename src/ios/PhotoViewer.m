@@ -9,6 +9,7 @@
     // Member variables go here.
     Boolean isOpen;
     UIScrollView *fullView;
+    UIImageView *imageView;
     UIButton *closeBtn;
     BOOL showCloseBtn;
     BOOL copyToReference;
@@ -54,6 +55,11 @@
 - (void)show:(CDVInvokedUrlCommand*)command
 {
     if (isOpen == false) {
+        [[UIDevice currentDevice] beginGeneratingDeviceOrientationNotifications];
+        [[NSNotificationCenter defaultCenter]
+         addObserver:self selector:@selector(orientationChanged:)
+         name:UIDeviceOrientationDidChangeNotification
+         object:[UIDevice currentDevice]];
         isOpen = true;
         UIActivityIndicatorView *activityIndicator = [[UIActivityIndicatorView alloc] initWithFrame:self.viewController.view.frame];
         [activityIndicator setActivityIndicatorViewStyle:UIActivityIndicatorViewStyleWhiteLarge];
@@ -64,13 +70,16 @@
 
         [activityIndicator startAnimating];
 
-
         CDVPluginResult* pluginResult = nil;
         NSString* url = [command.arguments objectAtIndex:0];
         NSString* title = [command.arguments objectAtIndex:1];
         BOOL isShareEnabled = [[command.arguments objectAtIndex:2] boolValue];
         showCloseBtn = [[command.arguments objectAtIndex:3] boolValue];
         copyToReference = [[command.arguments objectAtIndex:4] boolValue];
+
+        if ([url rangeOfString:@"http"].location != NSNotFound) {
+            copyToReference = true;
+        }
 
         if (url != nil && [url length] > 0) {
             [self.commandDelegate runInBackground:^{
@@ -171,14 +180,14 @@
     fullView.clipsToBounds = YES;
     fullView.delegate = self;
 
-    UIImageView *imageView = [[UIImageView alloc]init];
+    imageView = [[UIImageView alloc]init];
     [imageView setContentMode:UIViewContentModeScaleAspectFit];
     UIImage *image = [UIImage imageWithContentsOfFile:url.path];
     [imageView setBackgroundColor:[UIColor clearColor]];
     imageView.image = image;
     imageView.contentMode = UIViewContentModeScaleAspectFit;
 
-    [imageView setFrame:CGRectMake(0, 0, self.viewController.view.bounds.size.width, self.viewController.view.bounds.size.height)];
+    [imageView setFrame:CGRectMake(0, 0, viewWidth, viewHeight)];
 
     [fullView addSubview:imageView];
     fullView.contentSize = imageView.frame.size;
@@ -219,8 +228,16 @@
     fullView = nil;
 }
 
--(BOOL)prefersStatusBarHidden {
-    return YES;
-}
+- (void) orientationChanged:(NSNotification *)note
+{
+    if(fullView != nil) {
+        CGFloat viewWidth = self.viewController.view.bounds.size.width;
+        CGFloat viewHeight = self.viewController.view.bounds.size.height;
 
+        [fullView setFrame:CGRectMake(0, 0, viewWidth, viewHeight)];
+        [imageView setFrame:CGRectMake(0, 0, viewWidth, viewHeight)];
+        fullView.contentSize = imageView.frame.size;
+        [closeBtn setFrame:CGRectMake(0, viewHeight - 50, 50, 50)];
+    }
+}
 @end
