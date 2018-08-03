@@ -192,7 +192,6 @@ public class PhotoActivity extends Activity {
                     Picasso.with(PhotoActivity.this)
                             .load(mTempImage)
                             .fit()
-                            .centerCrop()
                             .into(photo, new com.squareup.picasso.Callback() {
                                 @Override
                                 public void onSuccess() {
