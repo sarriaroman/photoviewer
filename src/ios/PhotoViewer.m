@@ -108,6 +108,18 @@
                         });
                     }
 
+                } else {
+                    dispatch_async(dispatch_get_main_queue(), ^{
+                        [activityIndicator stopAnimating];
+                        [self closeImage];
+                        // show an alert to the user
+                        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Photo viewer error"
+                                                                        message:@"The file to show is not a valid image, or could not be loaded."
+                                                                       delegate:self
+                                                              cancelButtonTitle:@"OK"
+                                                              otherButtonTitles:nil];
+                        [alert show];
+                    });
                 }
             }];
             pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK];
@@ -125,13 +137,19 @@
     NSURL* fileURL = [NSURL URLWithString:webStringURL];
 
     if (copyToReference && ![fileURL isFileReferenceURL]) {
-        NSData *data = [NSData dataWithContentsOfURL:fileURL];
+        NSError* error = nil;
+        NSData *data = [NSData dataWithContentsOfURL:fileURL options:0 error:&error];
+        if (error)
+            return nil;
+        
         if( data ) {
             // save this image to a temp folder
             NSURL *tmpDirURL = [NSURL fileURLWithPath:NSTemporaryDirectory() isDirectory:YES];
             NSString *filename = [[NSUUID UUID] UUIDString];
-            fileURL = [[tmpDirURL URLByAppendingPathComponent:filename] URLByAppendingPathExtension:[self contentTypeForImageData:data]];
-
+            NSString *ext = [self contentTypeForImageData:data];
+            if (ext == nil)
+                return nil;
+            fileURL = [[tmpDirURL URLByAppendingPathComponent:filename] URLByAppendingPathExtension:ext];
             [[NSFileManager defaultManager] createFileAtPath:[fileURL path] contents:data attributes:nil];
         }
     }
