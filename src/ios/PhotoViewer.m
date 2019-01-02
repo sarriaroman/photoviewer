@@ -77,7 +77,7 @@
         BOOL isShareEnabled = [[command.arguments objectAtIndex:2] boolValue];
         showCloseBtn = [[command.arguments objectAtIndex:3] boolValue];
         copyToReference = [[command.arguments objectAtIndex:4] boolValue];
-        headers = [self headers:[command objectAtIndex:5]];
+        headers = [self headers:[command.arguments objectAtIndex:5]];
         
         if ([url rangeOfString:@"http"].location == 0) {
             copyToReference = true;
