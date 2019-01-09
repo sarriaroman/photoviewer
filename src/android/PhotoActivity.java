@@ -1,6 +1,7 @@
 package com.sarriaroman.PhotoViewer;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
@@ -20,14 +21,18 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.squareup.picasso.Picasso;
+import com.squareup.picasso.UrlConnectionDownloader;
 
 import org.json.JSONArray;
 import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.lang.reflect.Method;
+import java.net.HttpURLConnection;
+import java.util.Iterator;
 
 import uk.co.senab.photoview.PhotoViewAttacher;
 
@@ -45,6 +50,7 @@ public class PhotoActivity extends Activity {
     private String mImage;
     private String mTitle;
     private boolean mShare;
+    private JSONObject mHeaders;
     private File mTempImage;
     private int shareBtnVisibility;
 
@@ -63,6 +69,8 @@ public class PhotoActivity extends Activity {
             this.mImage = mArgs.getString(0);
             this.mTitle = mArgs.getString(1);
             this.mShare = mArgs.getBoolean(2);
+            this.mHeaders = parseHeaders(mArgs.getString(5));
+
             //Set the share button visibility
             shareBtnVisibility = this.mShare ? View.VISIBLE : View.INVISIBLE;
 
@@ -161,8 +169,14 @@ public class PhotoActivity extends Activity {
      */
     private void loadImage() {
         if (mImage.startsWith("http") || mImage.startsWith("file")) {
-            Picasso.with(this)
-                    .load(mImage)
+            Picasso picasso;
+            if (mHeaders == null) {
+                picasso = Picasso.with(this);
+            } else {
+                picasso = getImageLoader(this);
+            }
+
+            picasso.load(mImage)
                     .fit()
                     .centerInside()
                     .into(photo, new com.squareup.picasso.Callback() {
@@ -274,4 +288,44 @@ public class PhotoActivity extends Activity {
         return file;
     }
 
+    private JSONObject parseHeaders(String headerString) {
+        JSONObject headers = null;
+
+        // Short circuit if headers is empty
+        if (headerString == null || headerString.length() == 0) {
+            return headers;
+        }
+
+        // headers should never be a JSON array, only a JSON object
+        try {
+            headers = new JSONObject(headerString);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return headers;
+    }
+
+    private Picasso getImageLoader(Context ctx) {
+        Picasso.Builder builder = new Picasso.Builder(ctx);
+
+        builder.downloader(new UrlConnectionDownloader(ctx) {
+            @Override
+            protected HttpURLConnection openConnection(Uri uri) throws IOException {
+                HttpURLConnection connection = super.openConnection(uri);
+                Iterator<String> keyIter = mHeaders.keys();
+                String key = null;
+                try {
+                    while (keyIter.hasNext()) {
+                        key = keyIter.next();
+                        connection.setRequestProperty(key, mHeaders.getString(key));
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+                return connection;
+            }
+        });
+
+        return builder.build();
+    }
 }

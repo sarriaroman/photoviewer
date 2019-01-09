@@ -21,7 +21,11 @@ exports.show = function(url, title, options) {
         options.copyToReference = false;
     }
 
-    var args = [url, title, options.share, options.closeButton, options.copyToReference];
+    if (options.headers === undefined) {
+        options.headers = '';
+    }
+
+    var args = [url, title, options.share, options.closeButton, options.copyToReference, options.headers];
 
     exec(function() {}, function() {}, "PhotoViewer", "show", args);
 };
