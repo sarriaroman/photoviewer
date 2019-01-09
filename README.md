@@ -86,3 +86,7 @@ PhotoViewer.show('http://my_site.com/my_image.jpg', 'Optional Title', options);
 (1.1.17)  
 - Additional options added for iOS
 - Fix share issue with SDK version 24 or above on Android
+
+(1.1.9)
+- Support for Headers
+- Enable or Disable Picasso Options ( Only Android ): fit, centerInside, centerCrop.

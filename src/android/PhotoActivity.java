@@ -51,6 +51,7 @@ public class PhotoActivity extends Activity {
     private String mTitle;
     private boolean mShare;
     private JSONObject mHeaders;
+    private JSONObject pOptions;
     private File mTempImage;
     private int shareBtnVisibility;
 
@@ -70,6 +71,7 @@ public class PhotoActivity extends Activity {
             this.mTitle = mArgs.getString(1);
             this.mShare = mArgs.getBoolean(2);
             this.mHeaders = parseHeaders(mArgs.getString(5));
+            this.pOptions = mArgs.getJSONObject(6);
 
             //Set the share button visibility
             shareBtnVisibility = this.mShare ? View.VISIBLE : View.INVISIBLE;
@@ -164,6 +166,22 @@ public class PhotoActivity extends Activity {
         mAttacher.update();
     }
 
+    private Piccasso setOptions(Piccasso picasso) throws JSONException {
+        if(this.pOptions.has("fit") && this.pOptions.optBoolean("fit")) {
+            picasso.fit();
+        }
+
+        if(this.pOptions.has("centerInside") && this.pOptions.optBoolean("centerInside")) {
+            picasso.centerInside();
+        }
+
+        if(this.pOptions.has("centerCrop") && this.pOptions.optBoolean("centerCrop")) {
+            picasso.centerCrop();
+        }
+
+        return picasso;
+    }
+
     /**
      * Load the image using Picasso
      */
@@ -176,9 +194,9 @@ public class PhotoActivity extends Activity {
                 picasso = getImageLoader(this);
             }
 
-            picasso.load(mImage)
-                    .fit()
-                    .centerInside()
+            picasso.load(mImage);
+
+            this.setOptions(picasso)
                     .into(photo, new com.squareup.picasso.Callback() {
                         @Override
                         public void onSuccess() {
@@ -203,10 +221,10 @@ public class PhotoActivity extends Activity {
 
                 protected void onPostExecute(File file) {
                     mTempImage = file;
-                    Picasso.with(PhotoActivity.this)
-                            .load(mTempImage)
-                            .fit()
-                            .centerCrop()
+                    Piccasso picasso = Picasso.with(PhotoActivity.this)
+                            .load(mTempImage);
+
+                    this.setOptions(picasso)
                             .into(photo, new com.squareup.picasso.Callback() {
                                 @Override
                                 public void onSuccess() {

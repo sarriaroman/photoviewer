@@ -25,7 +25,17 @@ exports.show = function(url, title, options) {
         options.headers = '';
     }
 
-    var args = [url, title, options.share, options.closeButton, options.copyToReference, options.headers];
+    var piccasoOptions = {
+        fit: true,
+        centerInside: true,
+        centerCrop: false
+    };
+
+    if(options.picassoOptions) {
+        piccasoOptions = Object.assign(piccasoOptions, options.picassoOptions);
+    }
+
+    var args = [url, title, options.share, options.closeButton, options.copyToReference, options.headers, picassoOptions];
 
     exec(function() {}, function() {}, "PhotoViewer", "show", args);
 };
