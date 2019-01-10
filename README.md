@@ -94,3 +94,6 @@ PhotoViewer.show('http://my_site.com/my_image.jpg', 'Optional Title', options);
 (1.1.21)
 - Fix Typo in PhotoViewer.js
 - Fix Typo in PhotoActivity.java
+
+(1.1.22)
+- Ask always for permissions on Android.

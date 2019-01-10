@@ -34,13 +34,7 @@ public class PhotoViewer extends CordovaPlugin {
             this.args = args;
             this.callbackContext = callbackContext;
 
-            boolean requiresExternalPermission = true;
-            try {
-                requiresExternalPermission = this.args.getBoolean(2);
-            } catch (JSONException exception) {
-            }
-
-            if (!requiresExternalPermission || (cordova.hasPermission(READ) && cordova.hasPermission(WRITE))) {
+            if (cordova.hasPermission(READ) && cordova.hasPermission(WRITE)) {
                 this.launchActivity();
             } else {
                 this.getPermission();
