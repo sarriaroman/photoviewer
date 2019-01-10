@@ -91,5 +91,6 @@ PhotoViewer.show('http://my_site.com/my_image.jpg', 'Optional Title', options);
 - Support for Headers
 - Enable or Disable Picasso Options ( Only Android ): fit, centerInside, centerCrop.
 
-(1.1.20)
+(1.1.21)
 - Fix Typo in PhotoViewer.js
+- Fix Typo in PhotoActivity.java

@@ -166,7 +166,7 @@ public class PhotoActivity extends Activity {
         mAttacher.update();
     }
 
-    private Piccasso setOptions(Piccasso picasso) throws JSONException {
+    private Picasso setOptions(Picasso picasso) throws JSONException {
         if(this.pOptions.has("fit") && this.pOptions.optBoolean("fit")) {
             picasso.fit();
         }
