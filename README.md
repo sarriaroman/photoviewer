@@ -97,3 +97,6 @@ PhotoViewer.show('http://my_site.com/my_image.jpg', 'Optional Title', options);
 
 (1.1.22)
 - Ask always for permissions on Android.
+
+(1.2.0)
+- Adding TS files from next version to support TypeScript projects

@@ -21,5 +21,11 @@
     "cordova-ios"
   ],
   "author": "Román A. Sarria",
-  "license": "MIT"
+  "license": "MIT",
+  "scripts": {
+    "build": "tsc"
+  },
+  "devDependencies": {
+    "typescript": "3.2.2"
+  }
 }
