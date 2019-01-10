@@ -31,11 +31,11 @@ exports.show = function(url, title, options) {
         centerCrop: false
     };
 
-    if(options.picassoOptions) {
-        piccasoOptions = Object.assign(piccasoOptions, options.picassoOptions);
+    if(options.piccasoOptions) {
+        piccasoOptions = Object.assign(piccasoOptions, options.piccasoOptions);
     }
 
-    var args = [url, title, options.share, options.closeButton, options.copyToReference, options.headers, picassoOptions];
+    var args = [url, title, options.share, options.closeButton, options.copyToReference, options.headers, piccasoOptions];
 
     exec(function() {}, function() {}, "PhotoViewer", "show", args);
 };
