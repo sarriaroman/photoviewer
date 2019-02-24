@@ -21,6 +21,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.squareup.picasso.Picasso;
+import com.squareup.picasso.RequestCreator;
 import com.squareup.picasso.UrlConnectionDownloader;
 
 import org.json.JSONArray;
@@ -86,7 +87,11 @@ public class PhotoActivity extends Activity {
             titleTxt.setText(mTitle);
         }
 
-        loadImage();
+        try {
+            loadImage();
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
 
         // Set Button Listeners
         closeBtn.setOnClickListener(new View.OnClickListener() {
@@ -166,7 +171,7 @@ public class PhotoActivity extends Activity {
         mAttacher.update();
     }
 
-    private Picasso setOptions(Picasso picasso) throws JSONException {
+    private RequestCreator setOptions(RequestCreator picasso) throws JSONException {
         if(this.pOptions.has("fit") && this.pOptions.optBoolean("fit")) {
             picasso.fit();
         }
@@ -185,18 +190,16 @@ public class PhotoActivity extends Activity {
     /**
      * Load the image using Picasso
      */
-    private void loadImage() {
+    private void loadImage() throws JSONException {
         if (mImage.startsWith("http") || mImage.startsWith("file")) {
             Picasso picasso;
             if (mHeaders == null) {
-                picasso = Picasso.with(this);
+                picasso = Picasso.with(PhotoActivity.this);
             } else {
                 picasso = getImageLoader(this);
             }
 
-            picasso.load(mImage);
-
-            this.setOptions(picasso)
+            this.setOptions(picasso.load(mImage))
                     .into(photo, new com.squareup.picasso.Callback() {
                         @Override
                         public void onSuccess() {
@@ -221,23 +224,26 @@ public class PhotoActivity extends Activity {
 
                 protected void onPostExecute(File file) {
                     mTempImage = file;
-                    Piccasso picasso = Picasso.with(PhotoActivity.this)
-                            .load(mTempImage);
+                    Picasso picasso = Picasso.with(PhotoActivity.this);
 
-                    this.setOptions(picasso)
-                            .into(photo, new com.squareup.picasso.Callback() {
-                                @Override
-                                public void onSuccess() {
-                                    hideLoadingAndUpdate();
-                                }
+                    try {
+                        setOptions(picasso.load(mTempImage))
+                                .into(photo, new com.squareup.picasso.Callback() {
+                                    @Override
+                                    public void onSuccess() {
+                                        hideLoadingAndUpdate();
+                                    }
 
-                                @Override
-                                public void onError() {
-                                    Toast.makeText(getActivity(), "Error loading image.", Toast.LENGTH_LONG).show();
+                                    @Override
+                                    public void onError() {
+                                        Toast.makeText(getActivity(), "Error loading image.", Toast.LENGTH_LONG).show();
 
-                                    finish();
-                                }
-                            });
+                                        finish();
+                                    }
+                                });
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
                 }
             }.execute();
 
