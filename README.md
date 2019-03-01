@@ -100,3 +100,6 @@ PhotoViewer.show('http://my_site.com/my_image.jpg', 'Optional Title', options);
 
 (1.2.0)
 - Adding TS files from next version to support TypeScript projects
+
+(1.2.1)
+- Native fixes on Android platform
