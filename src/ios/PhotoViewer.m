@@ -78,7 +78,7 @@
         showCloseBtn = [[command.arguments objectAtIndex:3] boolValue];
         copyToReference = [[command.arguments objectAtIndex:4] boolValue];
         headers = [self headers:[command.arguments objectAtIndex:5]];
-        
+
         if ([url rangeOfString:@"http"].location == 0) {
             copyToReference = true;
         }
@@ -148,7 +148,7 @@
         }
         if (error)
             return nil;
-        
+
         if( data ) {
             // save this image to a temp folder
             NSURL *tmpDirURL = [NSURL fileURLWithPath:NSTemporaryDirectory() isDirectory:YES];
@@ -224,7 +224,7 @@
         [closeBtn setTitle:@"✕" forState:UIControlStateNormal];
         closeBtn.titleLabel.font = [UIFont systemFontOfSize: 32];
         [closeBtn setTitleColor:[UIColor colorWithRed:255/255.0 green:255/255.0 blue:255/255.0 alpha:0.6] forState:UIControlStateNormal];
-        [closeBtn setFrame:CGRectMake(0, viewHeight - 50, 50, 50)];
+        [closeBtn setFrame:CGRectMake(viewWidth - 50, 0, 50, 50)];
         [closeBtn setBackgroundColor:[UIColor colorWithRed:0.0 green:0.0 blue:0.0 alpha:0.0]];
         [closeBtn addTarget:self action:@selector(closeButtonPressed:) forControlEvents:UIControlEventTouchUpInside];
         [self.viewController.view addSubview:closeBtn];
@@ -270,7 +270,7 @@
     if (headerString == nil || [headerString length] == 0) {
         return nil;
     }
-    
+
     NSData *jsonData = [headerString dataUsingEncoding:NSUTF8StringEncoding];
     //    Note that JSONObjectWithData will return either an NSDictionary or an NSArray, depending whether your JSON string represents an a dictionary or an array.
     NSDictionary *jsonDictionary = [NSJSONSerialization JSONObjectWithData:jsonData options:0 error:nil];
@@ -281,12 +281,12 @@
 - (NSData *)imageDataFromURLWithHeaders:(NSString *)urlString {
     NSURL *url = [NSURL URLWithString:urlString];
     NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:url];
-    
+
     for(NSString *key in headers) {
         NSString *value = [headers objectForKey:key];
         [request setValue:value forHTTPHeaderField:key];
     }
-    
+
     NSData *data = [NSURLConnection sendSynchronousRequest:request
                                          returningResponse:nil
                                                      error:nil];
