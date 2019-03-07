@@ -4,7 +4,7 @@ var exec = require('cordova/exec');
 var PhotoViewer = /** @class */ (function () {
     function PhotoViewer() {
     }
-    PhotoViewer.show = function (url, title, options) {
+    PhotoViewer.show = function (url, title, options, successCallback, errorCallback) {
         if (title === void 0) { title = ''; }
         if (options === void 0) { options = {
             share: false,
@@ -22,7 +22,7 @@ var PhotoViewer = /** @class */ (function () {
             return;
         }
         var args = [url, title, options.share, options.closeButton, options.copyToReference, options.headers, options.piccasoOptions];
-        exec(function () { }, function () { }, "PhotoViewer", "show", args);
+        exec(successCallback, errorCallback, "PhotoViewer", "show", args);
     };
     return PhotoViewer;
 }());

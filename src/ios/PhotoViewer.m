@@ -18,6 +18,7 @@
 
 @property (nonatomic, strong) UIDocumentInteractionController *docInteractionController;
 @property (nonatomic, strong) NSMutableArray *documentURLs;
+@property (nonatomic,strong) NSString* tmpCommandCallbackID;
 
 - (void)show:(CDVInvokedUrlCommand*)command;
 @end
@@ -55,6 +56,7 @@
 
 - (void)show:(CDVInvokedUrlCommand*)command
 {
+    self.tmpCommandCallbackID = command.callbackId;
     if (isOpen == false) {
         [[UIDevice currentDevice] beginGeneratingDeviceOrientationNotifications];
         [[NSNotificationCenter defaultCenter]
@@ -124,12 +126,10 @@
                     });
                 }
             }];
-            pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK];
         } else {
             pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR];
+            [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
         }
-
-        [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
     }
 }
 
@@ -225,7 +225,7 @@
         closeBtn.titleLabel.font = [UIFont systemFontOfSize: 32];
         [closeBtn setTitleColor:[UIColor colorWithRed:255/255.0 green:255/255.0 blue:255/255.0 alpha:0.6] forState:UIControlStateNormal];
         [closeBtn setFrame:CGRectMake(viewWidth - 50, 0, 50, 50)];
-        [closeBtn setBackgroundColor:[UIColor colorWithRed:0.0 green:0.0 blue:0.0 alpha:0.0]];
+        [closeBtn setBackgroundColor:[UIColor colorWithRed:241/255.0 green:241/255.0 blue:243/255.0 alpha:0.6]];
         [closeBtn addTarget:self action:@selector(closeButtonPressed:) forControlEvents:UIControlEventTouchUpInside];
         [self.viewController.view addSubview:closeBtn];
     } else {
@@ -251,6 +251,7 @@
     isOpen = false;
     [fullView removeFromSuperview];
     fullView = nil;
+    [self.commandDelegate sendPluginResult:[CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsString:@"closeImage"] callbackId:self.tmpCommandCallbackID];
 }
 
 - (void) orientationChanged:(NSNotification *)note
