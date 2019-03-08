@@ -5,12 +5,12 @@
 
 Cordova:
 ```bash
-cordova plugin add com-sopraux-photoviewer
+cordova plugin add com-sarriaroman-photoviewer
 ```
 
 Ionic 2:
 ```bash
-$ ionic cordova plugin add com-sopraux-photoviewer
+$ ionic cordova plugin add com-sarriaroman-photoviewer
 $ npm install --save @ionic-native/photo-viewer
 ```
 

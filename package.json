@@ -1,9 +1,9 @@
 {
-  "name": "com-sopraux-photoviewer",
+  "name": "com-sarriaroman-photoviewer",
   "version": "1.2.0",
   "description": "This plugin is intended to show a picture from an URL into a Photo Viewer with zoom features.",
   "cordova": {
-    "id": "com-sopraux-photoviewer",
+    "id": "com-sarriaroman-photoviewer",
     "platforms": [
       "android",
       "ios"
@@ -11,7 +11,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/sopraux/photoviewer"
+    "url": "https://github.com/sarriaroman/photoviewer"
   },
   "keywords": [
     "cordova",
