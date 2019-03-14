@@ -29,12 +29,14 @@ $ npm install --save @ionic-native/photo-viewer
 PhotoViewer.show('http://my_site.com/my_image.jpg', 'Optional Title');
 ```
 
-Optionally you can pass third parameter option as object.
+You have to pass as third parameter the following options as object.
 
 Options:
-* share: Option is used to hide and show the share option.
-* closeBtn: Option for close button visibility when share false [ONLY FOR iOS]
-* copyToReference: If you need to copy image to reference before show then set it true [ONLY FOR iOS]
+* share: boolean - Option is used to hide and show the share option.
+* closeBtn: boolean - Option for close button visibility when share false [ONLY FOR iOS]
+* copyToReference: boolean - If you need to copy image to reference before show then set it true [ONLY FOR iOS]
+* headers: string - HTTP Headers [MUST BE PROVIDED]
+* picassoOptions: object - Options for picasso dependency [ONLY FOR ANDROID]
 
 ##### Usage
 
@@ -42,7 +44,9 @@ Options:
 var options = {
     share: true, // default is false
     closeButton: false, // default is true
-    copyToReference: true // default is false
+    copyToReference: true, // default is false
+    headers: '',  // If this is not provided, an exception will be triggered
+    piccasoOptions: { } // If this is not provided, an exception will be triggered
 };
 
 PhotoViewer.show('http://my_site.com/my_image.jpg', 'Optional Title', options);
