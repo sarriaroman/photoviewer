@@ -71,8 +71,15 @@ public class PhotoActivity extends Activity {
             this.mImage = mArgs.getString(0);
             this.mTitle = mArgs.getString(1);
             this.mShare = mArgs.getBoolean(2);
-            this.mHeaders = parseHeaders(mArgs.getString(5));
-            this.pOptions = mArgs.getJSONObject(6);
+            this.mHeaders = parseHeaders(mArgs.optString(5));
+            this.pOptions = mArgs.optJSONObject(6);
+
+            if( pOptions == null ) {
+                pOptions = new JSONObject();
+                pOptions.put("fit", true);
+                pOptions.put("centerInside", true);
+                pOptions.put("centerCrop", false);
+            }
 
             //Set the share button visibility
             shareBtnVisibility = this.mShare ? View.VISIBLE : View.INVISIBLE;
