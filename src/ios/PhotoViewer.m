@@ -11,6 +11,7 @@
     UIScrollView *fullView;
     UIImageView *imageView;
     UIButton *closeBtn;
+    UILabel *imageLabel;
     BOOL showCloseBtn;
     BOOL copyToReference;
     NSDictionary *headers;
@@ -225,9 +226,25 @@
         closeBtn.titleLabel.font = [UIFont systemFontOfSize: 32];
         [closeBtn setTitleColor:[UIColor colorWithRed:255/255.0 green:255/255.0 blue:255/255.0 alpha:0.6] forState:UIControlStateNormal];
         [closeBtn setFrame:CGRectMake(0, viewHeight - 50, viewWidth, 50)];
+        closeBtn.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
+        closeBtn.contentEdgeInsets = UIEdgeInsetsMake(0, 10, 0, 0);
         [closeBtn setBackgroundColor:[UIColor colorWithRed:0.0 green:0.0 blue:0.0 alpha:0.6]];
         [closeBtn addTarget:self action:@selector(closeButtonPressed:) forControlEvents:UIControlEventTouchUpInside];
         [self.viewController.view addSubview:closeBtn];
+        
+        imageLabel = [[UILabel alloc] initWithFrame:CGRectMake(60, viewHeight - 50, viewWidth - 120, 50)];
+        imageLabel.numberOfLines = 0;
+        imageLabel.lineBreakMode = NSLineBreakByWordWrapping;
+        imageLabel.minimumScaleFactor = 0.5;
+        imageLabel.adjustsFontSizeToFitWidth = YES;
+        
+        [imageLabel setTextAlignment:NSTextAlignmentCenter];
+        [imageLabel setTextColor:[UIColor whiteColor]];
+        [imageLabel setBackgroundColor:[UIColor clearColor]];
+        [imageLabel setFont:[UIFont fontWithName: @"San Fransisco" size: 14.0f]];
+        [imageLabel setText:title];
+        [self.viewController.view addSubview:imageLabel];
+        
     } else {
         UITapGestureRecognizer *singleTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(fullimagetapped:)];
         singleTap.numberOfTapsRequired = 1;
@@ -243,7 +260,10 @@
 
 - (void)closeButtonPressed:(UIButton *)button {
     [closeBtn removeFromSuperview];
+    [imageLabel removeFromSuperview];
+    
     closeBtn = nil;
+    imageLabel = nil;
     [self closeImage];
 }
 
