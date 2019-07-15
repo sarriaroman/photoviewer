@@ -110,3 +110,6 @@ PhotoViewer.show('http://my_site.com/my_image.jpg', 'Optional Title', options);
 
 (1.2.2)
 - PRs: #164 #165 #167
+
+(1.2.3)
+- PRs: #179
