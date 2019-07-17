@@ -28,4 +28,3 @@ var PhotoViewer = /** @class */ (function () {
 }());
 // @ts-ignore
 module.exports = PhotoViewer;
-//# sourceMappingURL=PhotoViewer.js.map

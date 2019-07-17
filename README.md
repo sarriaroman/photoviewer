@@ -113,3 +113,6 @@ PhotoViewer.show('http://my_site.com/my_image.jpg', 'Optional Title', options);
 
 (1.2.3)
 - PRs: #179
+
+(1.2.4)
+- Removing Source Maps because of errors
