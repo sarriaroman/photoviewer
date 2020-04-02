@@ -1,7 +1,6 @@
 package com.sarriaroman.PhotoViewer;
 
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
@@ -20,9 +19,9 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 import com.squareup.picasso.RequestCreator;
-import com.squareup.picasso.UrlConnectionDownloader;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -32,9 +31,6 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.lang.reflect.Method;
-import java.net.HttpURLConnection;
-import java.util.Iterator;
-
 import uk.co.senab.photoview.PhotoViewAttacher;
 
 public class PhotoActivity extends Activity {
@@ -199,27 +195,19 @@ public class PhotoActivity extends Activity {
      */
     private void loadImage() throws JSONException {
         if (mImage.startsWith("http") || mImage.startsWith("file")) {
-            Picasso picasso;
-            if (mHeaders == null) {
-                picasso = Picasso.with(PhotoActivity.this);
-            } else {
-                picasso = getImageLoader(this);
-            }
+            this.setOptions(Picasso.get().load(mImage)).into(photo, new Callback() {
+                @Override
+                public void onSuccess() {
+                    hideLoadingAndUpdate();
+                }
 
-            this.setOptions(picasso.load(mImage))
-                    .into(photo, new com.squareup.picasso.Callback() {
-                        @Override
-                        public void onSuccess() {
-                            hideLoadingAndUpdate();
-                        }
+                @Override
+                public void onError(Exception e) {
+                    Toast.makeText(getActivity(), "Error loading image.", Toast.LENGTH_LONG).show();
 
-                        @Override
-                        public void onError() {
-                            Toast.makeText(getActivity(), "Error loading image.", Toast.LENGTH_LONG).show();
-
-                            finish();
-                        }
-                    });
+                    finish();
+                }
+            });
         } else if (mImage.startsWith("data:image")) {
 
             new AsyncTask<Void, Void, File>() {
@@ -231,18 +219,17 @@ public class PhotoActivity extends Activity {
 
                 protected void onPostExecute(File file) {
                     mTempImage = file;
-                    Picasso picasso = Picasso.with(PhotoActivity.this);
 
                     try {
-                        setOptions(picasso.load(mTempImage))
-                                .into(photo, new com.squareup.picasso.Callback() {
+                        setOptions(Picasso.get().load(mTempImage))
+                                .into(photo, new Callback() {
                                     @Override
                                     public void onSuccess() {
                                         hideLoadingAndUpdate();
                                     }
 
                                     @Override
-                                    public void onError() {
+                                    public void onError(Exception e) {
                                         Toast.makeText(getActivity(), "Error loading image.", Toast.LENGTH_LONG).show();
 
                                         finish();
@@ -334,29 +321,5 @@ public class PhotoActivity extends Activity {
             e.printStackTrace();
         }
         return headers;
-    }
-
-    private Picasso getImageLoader(Context ctx) {
-        Picasso.Builder builder = new Picasso.Builder(ctx);
-
-        builder.downloader(new UrlConnectionDownloader(ctx) {
-            @Override
-            protected HttpURLConnection openConnection(Uri uri) throws IOException {
-                HttpURLConnection connection = super.openConnection(uri);
-                Iterator<String> keyIter = mHeaders.keys();
-                String key = null;
-                try {
-                    while (keyIter.hasNext()) {
-                        key = keyIter.next();
-                        connection.setRequestProperty(key, mHeaders.getString(key));
-                    }
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-                return connection;
-            }
-        });
-
-        return builder.build();
     }
 }
