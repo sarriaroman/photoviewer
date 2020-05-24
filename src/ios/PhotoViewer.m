@@ -136,7 +136,11 @@
 
 - (NSURL *)localFileURLForImage:(NSString *)image
 {
-    NSString* webStringURL = [image stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLFragmentAllowedCharacterSet]];
+    Boolean isFirebase = [image rangeOfString:@"firebase"].length > 0;
+    NSString* webStringURL = image;
+    if (!isFirebase) {
+      webStringURL = [image stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLFragmentAllowedCharacterSet]];
+    }
     NSURL* fileURL = [NSURL URLWithString:webStringURL];
 
     if (copyToReference && ![fileURL isFileReferenceURL]) {
