@@ -120,3 +120,4 @@ PhotoViewer.show('http://my_site.com/my_image.jpg', 'Optional Title', options);
 (1.2.5) 
 - Update Picasso Library to 2.71828
 - Fixed Picasso Bug
+- Thanks to @TdoubleG
