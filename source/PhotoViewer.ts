@@ -1,16 +1,16 @@
 // @ts-ignore
-var exec = require('cordova/exec');
+let exec = require('cordova/exec');
 
 interface IPhotoViewerOptions {
-    share?: boolean,
-    closeButton?: boolean,
-    copyToReference?: boolean,
-    headers?: string,
+    share?: boolean;
+    closeButton?: boolean;
+    copyToReference?: boolean;
+    headers?: string;
     piccasoOptions?: {
         fit?: boolean,
         centerInside?: boolean,
         centerCrop?: boolean
-    }
+    };
 }
 
 class PhotoViewer {
@@ -26,14 +26,14 @@ class PhotoViewer {
             centerCrop: false
         }
     }) {
-        if (url && url.trim() == '') {
+        if (url && url.trim() === '') {
             // Do nothing
             return;
         }
 
-        var args = [url, title, options.share, options.closeButton, options.copyToReference, options.headers, options.piccasoOptions];
-    
-        exec(function() {}, function() {}, "PhotoViewer", "show", args);
+        const args = [url, title, options.share, options.closeButton, options.copyToReference, options.headers, options.piccasoOptions];
+
+        exec(() => { }, () => { }, 'PhotoViewer', 'show', args);
     }
 }
 
