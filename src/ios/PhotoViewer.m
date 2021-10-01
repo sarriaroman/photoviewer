@@ -287,13 +287,15 @@
     if(fullView != nil) {
         double newRotation = [self getRotation];
    
-        if(currentRotation) {
-            imageView.transform = CGAffineTransformMakeRotation(-(currentRotation * M_PI / 180));
-        }
+        if(newRotation >= 0.0) {
+            if(currentRotation) {
+                imageView.transform = CGAffineTransformMakeRotation(-(currentRotation * M_PI / 180));
+            }
 
-        imageView.transform = CGAffineTransformMakeRotation(newRotation * M_PI / 180);
-        
-        currentRotation = newRotation;
+            imageView.transform = CGAffineTransformMakeRotation(newRotation * M_PI / 180);
+            
+            currentRotation = newRotation;
+        }
         
         CGFloat viewWidth = self.viewController.view.bounds.size.width;
         CGFloat viewHeight = self.viewController.view.bounds.size.height;
@@ -306,7 +308,7 @@
 }
 
 - (double) getRotation
-{
+{    
     switch([[UIDevice currentDevice] orientation]) {
         case UIDeviceOrientationPortraitUpsideDown:
             return 180.0;
@@ -317,11 +319,11 @@
         case UIDeviceOrientationLandscapeRight:
             return 270.0;
             break;
-        
-        case UIDeviceOrientationUnknown:
         case UIDeviceOrientationPortrait:
-        default:
             return 0.0;
+        case UIDeviceOrientationUnknown:
+        default:
+            return -1.0;
             break;
     }
 }
