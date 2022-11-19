@@ -1,6 +1,6 @@
 {
   "name": "com-sarriaroman-photoviewer",
-  "version": "1.2.5",
+  "version": "1.3.0",
   "description": "This plugin is intended to show a picture from an URL into a Photo Viewer with zoom features.",
   "cordova": {
     "id": "com-sarriaroman-photoviewer",
