@@ -185,6 +185,14 @@
         case 0x4D:
             return @"tiff";
     }
+
+    const char webp[4] = {'R', 'I', 'F', 'F'};
+    char bytes[12] = {0};
+    [data getBytes:&bytes length:12];
+    if (!memcmp(bytes, webp, 4)) {
+        return @"webp";
+    }
+
     return nil;
 }
 
