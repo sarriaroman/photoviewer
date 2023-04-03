@@ -52,8 +52,6 @@ public class PhotoActivity extends Activity {
     private File mTempImage;
     private int shareBtnVisibility;
 
-    public static JSONArray mArgs = null;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -64,6 +62,7 @@ public class PhotoActivity extends Activity {
         findViews();
 
         try {
+			JSONArray mArgs = new JSONArray(getIntent().getStringExtra("ARGS"));
             this.mImage = mArgs.getString(0);
             this.mTitle = mArgs.getString(1);
             this.mShare = mArgs.getBoolean(2);
