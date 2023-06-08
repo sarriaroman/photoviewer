@@ -3,6 +3,7 @@ package com.sarriaroman.PhotoViewer;
 import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.os.Build;
 
 import org.apache.cordova.CallbackContext;
 import org.apache.cordova.CordovaPlugin;
@@ -22,6 +23,7 @@ public class PhotoViewer extends CordovaPlugin {
 
     public static final String WRITE = Manifest.permission.WRITE_EXTERNAL_STORAGE;
     public static final String READ = Manifest.permission.READ_EXTERNAL_STORAGE;
+    public static final String READ_IMAGES = Manifest.permission.READ_MEDIA_IMAGES;
 
     public static final int REQ_CODE = 0;
 
@@ -33,11 +35,18 @@ public class PhotoViewer extends CordovaPlugin {
         if (action.equals("show")) {
             this.args = args;
             this.callbackContext = callbackContext;
-
-            if (cordova.hasPermission(READ) && cordova.hasPermission(WRITE)) {
-                this.launchActivity();
+            if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                if (cordova.hasPermission(READ_IMAGES)) {
+                    this.launchActivity();
+                } else {
+                    this.getPermission();
+                }
             } else {
-                this.getPermission();
+                if (cordova.hasPermission(READ) && cordova.hasPermission(WRITE)) {
+                    this.launchActivity();
+                } else {
+                    this.getPermission();
+                }
             }
             return true;
         }
@@ -45,7 +54,11 @@ public class PhotoViewer extends CordovaPlugin {
     }
 
     protected void getPermission() {
-        cordova.requestPermissions(this, REQ_CODE, new String[]{WRITE, READ});
+        if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            cordova.requestPermissions(this, REQ_CODE, new String[]{READ_IMAGES});
+        } else {
+            cordova.requestPermissions(this, REQ_CODE, new String[]{WRITE, READ});
+        }
     }
 
     //
